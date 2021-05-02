@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solr</title>
+</head>
+
+<style>
+    h2 {
+        text-align: center;
+    }
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        background-color: rgb(255, 245, 230);
+    }
+
+    .container pre div {
+        margin: 5px;
+        background-color: bisque;
+    }
+</style>
+
+<body>
+    <div>
+        <div><input type="text" placeholder="old solr query"></div>
+        <div><input type="text" placeholder="new solr query"></div>
+        <button>search</button>
+    </div>
+    <div class="container">
+        <div>
+            <h2>Old</h2>
+            <pre id="old"></pre>
+        </div>
+        <div>
+            <h2>New</h2>
+            <pre id="new"></pre>
+        </div>
+    </div>
+</body>
+
+<script src="solrCompare.js"></script>
+
+</html>
