@@ -12,6 +12,7 @@
     h2 {
         text-align: center;
     }
+
     .container {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -25,21 +26,21 @@
 </style>
 
 <body>
+<div>
+    <div><input type="text" placeholder="old solr query"></div>
+    <div><input type="text" placeholder="new solr query"></div>
+    <button>search</button>
+</div>
+<div class="container">
     <div>
-        <div><input type="text" placeholder="old solr query"></div>
-        <div><input type="text" placeholder="new solr query"></div>
-        <button>search</button>
+        <h2>Old</h2>
+        <pre id="old"></pre>
     </div>
-    <div class="container">
-        <div>
-            <h2>Old</h2>
-            <pre id="old"></pre>
-        </div>
-        <div>
-            <h2>New</h2>
-            <pre id="new"></pre>
-        </div>
+    <div>
+        <h2>New</h2>
+        <pre id="new"></pre>
     </div>
+</div>
 </body>
 
 <script src="solrCompare.js"></script>

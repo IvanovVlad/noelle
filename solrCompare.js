@@ -1,5 +1,5 @@
-let urlOld = "http://localhost:8081/solr/helloworld/select?q=*%3A*&rows=999&start=0";
-let urlNew = "http://localhost:8081/solr/helloworld1/select?q=*%3A*&rows=999&start=0";
+let urlOld = "http://192.168.0.35:8983/solr/parsed_cards/select?fl=case_number, side, court_name, process_type&q=(((side:\"Иванов Иван Иванович\") OR (side:\"Иванов ИИ\") OR (side:\"Иванов И.И\") OR (side:\"Иванов И И\"))) AND (region:18)&rows=200";
+let urlNew = "http://192.168.32.212:8991/solr/case/select?fl=caseNumber, plaintiff, defendant, side, other, courtName, courtType&q=(((plaintiff:\"Иванов Иван Иванович\") OR (plaintiff:\"Иванов ИИ\") OR (plaintiff:\"Иванов И.И\") OR (plaintiff:\"Иванов И И\")) OR ((defendant:\"Иванов Иван Иванович\") OR (defendant:\"Иванов ИИ\") OR (defendant:\"Иванов И.И\") OR (defendant:\"Иванов И И\")) OR ((side:\"Иванов Иван Иванович\") OR (side:\"Иванов ИИ\") OR (side:\"Иванов И.И\") OR (side:\"Иванов И И\")) OR ((other:\"Иванов Иван Иванович\") OR (other:\"Иванов ИИ\") OR (other:\"Иванов И.И\") OR (other:\"Иванов И И\"))) AND (region:18)&rows=200";
 
 document.querySelector("button").addEventListener('click', queryAndCompare);
 
@@ -10,15 +10,15 @@ document.querySelectorAll("input[type='text']").forEach((a, i) => {
 
 async function queryAndCompare() {
     Promise.all([
-        fetch(urlOld).then(responce => responce.json()),
-        fetch(urlNew).then(responce => responce.json())
-    ]).then(responces => compareJsons(responces[0], responces[1]));
+        fetch(urlOld).then(response => response.json()),
+        fetch(urlNew).then(response => response.json())
+    ]).then(responses => compareJsons(responses[0], responses[1]));
 }
 
 function compareJsons(oldJson, newJson) {
     const oldDocs = oldJson.response.docs;
     const newDocs = newJson.response.docs;
-    
+
     document.querySelector("#old").innerHTML = oldDocs.map(od => {
         if (!newDocs.some(nd => solrCompare(nd, od))) return od;
     }).filter(v => v).reduce((acc, v) => acc + `<div>${JSON.stringify(v, '\n', 6)}</div>`, "")
@@ -26,8 +26,14 @@ function compareJsons(oldJson, newJson) {
     document.querySelector("#new").innerHTML = newDocs.map(nd => {
         if (!oldDocs.some(od => solrCompare(nd, od))) return nd;
     }).filter(v => v).reduce((acc, v) => acc + `<div>${JSON.stringify(v, '\n', 6)}</div>`, "")
-    
+
 }
 
+const solrCompare = (nd, od) => {
 
-const solrCompare = (nd, od) => nd.courtName === od.court_name;
+    if (nd && od) {
+        return nd.caseNumber === od.case_number;
+    }
+
+    return false;
+}
